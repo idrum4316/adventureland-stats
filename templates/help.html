@@ -1,0 +1,111 @@
+[[ define "content" ]]
+    <div class="mdl-grid centered-grid">
+        <div class="page_content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--12-col">
+
+            <h3>Your Key</h3>
+
+            <form id="update_key">
+                <div class="mdl-textfield mdl-js-textfield" style="width: 450px;">
+                    <input class="mdl-textfield__input" type="text" id="key_text">
+                    <label class="mdl-textfield__label" for="sample3"></label>
+                </div>
+                <!-- Accent-colored raised button with ripple -->
+                <br><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">Save</button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="randomizeKey();">Generate</button>
+            </form>
+
+            <h3>How to Connect Your Characters</h3>
+                <p>
+                    To track the stats of your characters, all you have to do is paste a few lines of code into the CODE box!
+                    This page will attempt to put your key into the code, so that you can directly copy and paste it.
+                </p>
+
+                <p>Then just go back to the home page, and you'll see you characters stats in real-time! You can add as many characters as you want.
+                Just paste the exact same code in each one. You'll see stats for any character connected with your key.</p>
+
+                <p><b>Important: </b>This code needs to be pasted at the base level of your CODE. Don't put it inside of any existing interval loops.</p>
+
+                <pre class="pre_code">/////////////////////
+// START STAT CODE
+/////////////////////
+
+var StatSocket = new WebSocket("ws://land.devpad.org/update");
+var StatKey = "<span id="key_in_code"></span>";
+
+StatSocket.onopen = function (event) {
+
+    // Identify yourself to the stat server
+    StatSocket.send(StatKey);
+    StatSocket.send(character.name);
+
+    // Start updating your stats every 500ms
+    setInterval(function(){
+        StatSocket.send(character.hp +
+            "|" + character.max_hp +
+            "|" + character.mp +
+            "|" + character.max_mp +
+            "|" + character.xp +
+            "|" + character.max_xp +
+            "|" + character.level
+        );
+    },500); // Loops every 0.5 seconds.
+
+};
+
+///////////////////
+// END STAT CODE
+///////////////////
+</pre>
+
+                <h3>Some Notes</h3>
+
+                <p>
+                    <ul>
+                        <li>If a character disconnects, they'll disappear off the stats screen, and will show back up when they reconnect.</li>
+                        <li>
+                            The key is stored in your browser's local storage, so it should persist between sessions if you use the same browser.
+                            If you want to use multiple devices, just copy your key and save it on the help screen on any other devices you have.
+                        </li>
+                        <li>Code is here: <a href="https://gitlab.com/adventure-land/remote-monitor">link</a></li>
+                    </ul>
+                </p>
+
+          </div>
+    </div>
+[[ end ]]
+
+
+[[ define "js" ]]
+
+    <script>
+
+        function updateKey(e) {
+            if (e.preventDefault) e.preventDefault();
+
+            new_key = $("#key_text").val();
+            localStorage.setItem("key", new_key);
+            $("#key_in_code").html(localStorage.getItem("key"));
+
+            return false;
+        }
+
+        $( document ).ready(function() {
+            $("#key_text").val(localStorage.getItem("key"));
+			var form = document.getElementById('update_key');
+            if (form.attachEvent) {
+                form.attachEvent("submit", updateKey);
+            } else {
+                form.addEventListener("submit", updateKey);
+            }
+            $("#key_in_code").html(localStorage.getItem("key"));
+		});
+
+        function randomizeKey() {
+            localStorage.setItem("key", generateId(32));
+            $("#key_text").val(localStorage.getItem("key"));
+            $("#key_in_code").html(localStorage.getItem("key"));
+        }
+
+    </script>
+
+[[ end ]]

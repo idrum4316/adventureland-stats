@@ -1,0 +1,32 @@
+[[ define "content" ]]
+	<div class="mdl-grid centered-grid" id="card_list"></div>
+[[ end ]]
+
+[[ define "js" ]]
+	<!-- This is the template that will be loaded for each character -->
+	<script id="handlebars-card" type="text/x-handlebars-template">
+		<div class="mdl-cell mdl-cell--12-col" id="card_{{ name }}">
+			<div class="mdl-card mdl-shadow--2dp mdl-card-full-width">
+				<div class="mdl-card__title">
+					<h2 class="mdl-card__title-text" id="card_title_{{ name }}">{{ name }}</h2>
+				</div>
+				<div class="mdl-card__supporting-text">
+					<b>Health</b> <span id="health_nums_{{ name }}"></span><div id="health_bar_{{ name }}" class="mdl-progress mdl-js-progress mdl-progress-health"></div><br>
+					<b>Mana</b> <span id="mana_nums_{{ name }}"></span><div id="mana_bar_{{ name }}" class="mdl-progress mdl-js-progress mdl-progress-mana"></div><br>
+					<b>Experience</b> <span id="xp_nums_{{ name }}"></span><div id="xp_bar_{{ name }}" class="mdl-progress mdl-js-progress mdl-progress-xp"></div>
+				</div>
+				<div class="mdl-card__menu">
+					Level: <span id="lvl_{{ name }}" style="font-weight: 600;"></span>
+				</div>
+			</div>
+		</div>
+	</script>
+	<!-- End Template -->
+
+	<script type="text/javascript" src="/public/js/stats.js"></script>
+	<script>
+		$( document ).ready(function() {
+			track();
+		});
+	</script>
+[[ end ]]

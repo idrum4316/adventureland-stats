@@ -1,0 +1,78 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Home</title>
+		<meta name="description" content="Home Page">
+		<meta name="author" content="idrum4316">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+		<link rel="stylesheet" href="/public/material-modal/material-modal.min.css">
+		<link rel="stylesheet" href="/public/css/style.css">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+		<script src="/public/material-modal/material-modal.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+	</head>
+
+	<body>
+
+		<!-- Always shows a header, even in smaller screens. -->
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+			<header class="mdl-layout__header">
+				<div class="mdl-layout__header-row">
+					<!-- Title -->
+					<span class="mdl-layout-title">Adventure Land Stats</span>
+					<!-- Add spacer, to align navigation to the right -->
+					<div class="mdl-layout-spacer"></div>
+					<!-- Navigation. We hide it in small screens. -->
+					<nav class="mdl-navigation mdl-layout--large-screen-only">
+					<a class="mdl-navigation__link" href="/">Home</a>
+					<a class="mdl-navigation__link" href="/help">Help</a>
+					</nav>
+				</div>
+			</header>
+			<div class="mdl-layout__drawer">
+			<span class="mdl-layout-title">Menu</span>
+			<nav class="mdl-navigation">
+			<a class="mdl-navigation__link" href="/">Home</a>
+			<a class="mdl-navigation__link" href="/help">Help</a>
+			</nav>
+			</div>
+			<main class="mdl-layout__content">
+				<div class="page-content">
+
+					[[ template "content" . ]]
+
+				</div>
+			</main>
+		</div>
+
+        <script>
+
+            // dec2hex :: Integer -> String
+            function dec2hex (dec) {
+                return dec.toString(16);
+            }
+            // generateId :: Integer -> String
+            function generateId (len) {
+                var arr = new Uint8Array((len || 40) / 2);
+                window.crypto.getRandomValues(arr);
+                return Array.from(arr).map(dec2hex).join('');
+            }
+
+            if (localStorage.getItem("key") === null || localStorage.getItem("key") === "") {
+                localStorage.setItem("key", generateId(32));
+            }
+            var api_key = localStorage.getItem("key");
+
+        </script>
+
+		[[ template "js" . ]]
+	</body>
+</html>

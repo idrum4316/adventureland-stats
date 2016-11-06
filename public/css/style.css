@@ -1,0 +1,52 @@
+body {
+	background-color: #FAFAFA;
+}
+
+.centered-grid {
+	max-width: 1200px;
+}
+
+.mdl-card-full-width {
+	width: 100%;
+}
+
+#add-connection {
+	position: absolute;
+	bottom: 25px;
+	right: 25px;
+	z-index: 999;
+}
+
+.page_content {
+	padding: 2rem;
+}
+
+.pre_code {
+	background-color: #e5e5e5;
+	padding: 1rem;
+}
+
+/* Progress Bar Colors */
+.mdl-progress-health {
+	width: auto;
+}
+.mdl-progress-health .progressbar {
+	background-color: rgb(181, 63, 63);
+}
+.mdl-progress-health .bufferbar {
+	background-image: linear-gradient(to right,rgba(255,255,255,.7),rgba(255,255,255,.7)),linear-gradient(to right,rgb(181,63,63),rgb(181,63,63));
+}
+
+.mdl-progress-mana {
+	width: auto;
+}
+
+.mdl-progress-xp {
+	width: auto;
+}
+.mdl-progress-xp .progressbar {
+	background-color: rgb(87, 181, 63);
+}
+.mdl-progress-xp .bufferbar {
+	background-image: linear-gradient(to right,rgba(255,255,255,.7),rgba(255,255,255,.7)),linear-gradient(to right,rgb(87, 181, 63),rgb(87, 181, 63));
+}
