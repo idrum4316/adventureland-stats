@@ -112,7 +112,7 @@ func handleReport(w http.ResponseWriter, r *http.Request) {
     
 }
 
-// This serves the actual webpage
+// Serves the main screen
 func handleDisplay(w http.ResponseWriter, r *http.Request) {
 
     t, err := template.New("base.html").Delims("[[", "]]").ParseFiles("templates/base.html", "templates/home.html")
@@ -120,13 +120,13 @@ func handleDisplay(w http.ResponseWriter, r *http.Request) {
         log.Println(err)
         return
     }
-    t.Execute(w, nil)
+    t.Execute(w, "Home")
 
     return
 
 }
 
-// This serves the actual webpage
+// Serves the help page
 func handleHelp(w http.ResponseWriter, r *http.Request) {
 
     t, err := template.New("base.html").Delims("[[", "]]").ParseFiles("templates/base.html", "templates/help.html")
@@ -134,7 +134,7 @@ func handleHelp(w http.ResponseWriter, r *http.Request) {
         log.Println(err)
         return
     }
-    t.Execute(w, nil)
+    t.Execute(w, "Help")
 
     return
 

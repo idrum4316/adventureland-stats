@@ -1,9 +1,3 @@
-// Builds the URL to a websocket at the current host
-function get_ws_url(s) {
-    var l = window.location;
-    return ((l.protocol === "https:") ? "wss://" : "ws://") + l.host + l.pathname + s;
-}
-
 var template = $('#handlebars-card').html();
 var templateScript = Handlebars.compile(template);
 

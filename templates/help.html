@@ -29,7 +29,7 @@
 // START STAT CODE
 /////////////////////
 
-var StatSocket = new WebSocket("ws://land.devpad.org/update");
+var StatSocket = new WebSocket("<span id="ws_address"></span>");
 var StatKey = "<span id="key_in_code"></span>";
 
 StatSocket.onopen = function (event) {
@@ -90,6 +90,8 @@ StatSocket.onopen = function (event) {
         }
 
         $( document ).ready(function() {
+            $("#ws_address").html(get_ws_url("update"));
+
             $("#key_text").val(localStorage.getItem("key"));
 			var form = document.getElementById('update_key');
             if (form.attachEvent) {

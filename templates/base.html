@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<title>Home</title>
+		<title>Stats | [[ . ]]</title>
 		<meta name="description" content="Home Page">
 		<meta name="author" content="idrum4316">
 
@@ -65,6 +65,12 @@
                 window.crypto.getRandomValues(arr);
                 return Array.from(arr).map(dec2hex).join('');
             }
+
+            // Builds the URL to a websocket at the current host
+			function get_ws_url(s) {
+			    var l = window.location;
+			    return ((l.protocol === "https:") ? "wss://" : "ws://") + l.host + "/" + s;
+			}
 
             if (localStorage.getItem("key") === null || localStorage.getItem("key") === "") {
                 localStorage.setItem("key", generateId(32));
