@@ -69,4 +69,10 @@ function track() {
 		}
 	};
 
+	sock.onclose = function(){
+        //try to reconnect
+        sock = null;
+        track();
+    };
+
 }
