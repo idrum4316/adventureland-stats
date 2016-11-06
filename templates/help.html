@@ -11,7 +11,7 @@
                 </div>
                 <!-- Accent-colored raised button with ripple -->
                 <br><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">Save</button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="randomizeKey();">Generate</button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="generate_new_key();">Randomize</button>
             </form>
 
             <h3>How to Connect Your Characters</h3>
@@ -28,29 +28,42 @@
                 <pre class="pre_code">/////////////////////
 // START STAT CODE
 /////////////////////
-
-var StatSocket = new WebSocket("<span id="ws_address"></span>");
 var StatKey = "<span id="key_in_code"></span>";
 
-StatSocket.onopen = function (event) {
+function track_stats() {
 
-    // Identify yourself to the stat server
-    StatSocket.send(StatKey);
-    StatSocket.send(character.name);
+    var StatSocket = new WebSocket("<span id="ws_address"></span>");
 
-    // Start updating your stats every 500ms
-    setInterval(function(){
-        StatSocket.send(character.hp +
-            "|" + character.max_hp +
-            "|" + character.mp +
-            "|" + character.max_mp +
-            "|" + character.xp +
-            "|" + character.max_xp +
-            "|" + character.level
-        );
-    },500); // Loops every 0.5 seconds.
+    StatSocket.onopen = function (event) {
 
-};
+        // Identify yourself to the stat server
+        StatSocket.send(StatKey);
+        StatSocket.send(character.name);
+
+        // Start updating your stats every 500ms
+        stat_interval = setInterval(function(){
+            StatSocket.send(character.hp +
+                "|" + character.max_hp +
+                "|" + character.mp +
+                "|" + character.max_mp +
+                "|" + character.xp +
+                "|" + character.max_xp +
+                "|" + character.level
+            );
+        },500); // Loops every 0.5 seconds.
+
+    };
+
+    StatSocket.onclose = function(){
+        //try to reconnect
+        clearInterval(stat_interval);
+        StatSocket = null;
+        track_stats();
+    };
+
+}
+
+track_stats();
 
 ///////////////////
 // END STAT CODE
@@ -62,11 +75,12 @@ StatSocket.onopen = function (event) {
                 <p>
                     <ul>
                         <li>If a character disconnects, they'll disappear off the stats screen, and will show back up when they reconnect.</li>
+                        <li>If either socket loses it's connection, it will attemp to re-establish it.</li>
                         <li>
                             The key is stored in your browser's local storage, so it should persist between sessions if you use the same browser.
                             If you want to use multiple devices, just copy your key and save it on the help screen on any other devices you have.
                         </li>
-                        <li>Code is here: <a href="https://gitlab.com/adventure-land/remote-monitor">link</a></li>
+                        <li>Code is <a href="https://github.com/idrum4316/adventureland-stats">here</a>.</li>
                     </ul>
                 </p>
 
@@ -102,8 +116,8 @@ StatSocket.onopen = function (event) {
             $("#key_in_code").html(localStorage.getItem("key"));
 		});
 
-        function randomizeKey() {
-            localStorage.setItem("key", generateId(32));
+        function generate_new_key() {
+            randomizeKey();
             $("#key_text").val(localStorage.getItem("key"));
             $("#key_in_code").html(localStorage.getItem("key"));
         }

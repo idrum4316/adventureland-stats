@@ -1,9 +1,18 @@
 body {
-	background-color: #FAFAFA;
+	background-color: #f5f5f5;
+}
+
+a.no-style {
+	text-decoration: inherit;
+	color: inherit;
 }
 
 .centered-grid {
 	max-width: 1200px;
+}
+
+#welcome_card {
+	margin: auto;
 }
 
 .mdl-card-full-width {

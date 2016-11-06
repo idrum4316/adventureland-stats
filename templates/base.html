@@ -11,12 +11,10 @@
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
-		<link rel="stylesheet" href="/public/material-modal/material-modal.min.css">
 		<link rel="stylesheet" href="/public/css/style.css">
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
-		<script src="/public/material-modal/material-modal.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
 	</head>
 
@@ -27,7 +25,7 @@
 			<header class="mdl-layout__header">
 				<div class="mdl-layout__header-row">
 					<!-- Title -->
-					<span class="mdl-layout-title">Adventure Land Stats</span>
+					<a class="no-style" href="/"><span class="mdl-layout-title">AdventureLand Stats</span></a>
 					<!-- Add spacer, to align navigation to the right -->
 					<div class="mdl-layout-spacer"></div>
 					<!-- Navigation. We hide it in small screens. -->
@@ -65,6 +63,10 @@
                 window.crypto.getRandomValues(arr);
                 return Array.from(arr).map(dec2hex).join('');
             }
+
+            function randomizeKey() {
+			    localStorage.setItem("key", generateId(32));
+			}
 
             // Builds the URL to a websocket at the current host
 			function get_ws_url(s) {
