@@ -2,6 +2,11 @@ body {
 	background-color: #FAFAFA;
 }
 
+a.no-style {
+	text-decoration: inherit;
+	color: inherit;
+}
+
 .centered-grid {
 	max-width: 1200px;
 }
