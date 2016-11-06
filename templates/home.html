@@ -23,10 +23,76 @@
 	</script>
 	<!-- End Template -->
 
+	<!-- This is the template that will be loaded if there are no characters -->
+	<script id="handlebars-welcome" type="text/x-handlebars-template">
+		<div class="demo-card-wide mdl-card mdl-shadow--2dp" id="welcome_card">
+			<div class="mdl-card__title">
+				<h2 class="mdl-card__title-text">Your Key</h2>
+			</div>
+			<div class="mdl-card__supporting-text">
+				<form id="update_key">
+					<div class="mdl-textfield mdl-js-textfield" style="width: 450px;">
+						<input class="mdl-textfield__input" type="text" id="key_text">
+						<label class="mdl-textfield__label" for="sample3"></label>
+					</div>
+
+					<!-- Accent-colored raised button with ripple -->
+					<br><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">Save</button>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="generate_new_key();">Randomize</button>
+				</form>
+			</div>
+		</div>
+	</script>
+	<!-- End Template -->
+
 	<script type="text/javascript" src="/public/js/stats.js"></script>
 	<script>
+
+		function updateKey(e) {
+            if (e.preventDefault) e.preventDefault();
+
+            new_key = $("#key_text").val();
+            localStorage.setItem("key", new_key);
+
+            // Need to stop the socket and reconnect to send our new key
+            sock.close();
+            sock = null;
+            track();
+
+            return false;
+        }
+
+		function generate_new_key() {
+            randomizeKey();
+            $("#key_text").val(localStorage.getItem("key"));
+        }
+
+        function add_welcome_message() {
+        	$("#card_list").append(welcomeScript(null));
+			$("#key_text").val(localStorage.getItem("key"));
+
+			var form = document.getElementById('update_key');
+            if (form.attachEvent) {
+                form.attachEvent("submit", updateKey);
+            } else {
+                form.addEventListener("submit", updateKey);
+            }
+
+            if(!(typeof(componentHandler) == 'undefined')){
+				componentHandler.upgradeAllRegistered();
+			}
+        }
+
 		$( document ).ready(function() {
 			track();
+
+			setTimeout(function() {
+				// Display welcome message if there's nothing to track
+				if (active_cards.length === 0) {
+					add_welcome_message();
+				}
+			}, 100);
+
 		});
 	</script>
 [[ end ]]

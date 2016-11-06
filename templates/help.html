@@ -11,7 +11,7 @@
                 </div>
                 <!-- Accent-colored raised button with ripple -->
                 <br><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">Save</button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="randomizeKey();">Generate</button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="generate_new_key();">Randomize</button>
             </form>
 
             <h3>How to Connect Your Characters</h3>
@@ -80,7 +80,7 @@ track_stats();
                             The key is stored in your browser's local storage, so it should persist between sessions if you use the same browser.
                             If you want to use multiple devices, just copy your key and save it on the help screen on any other devices you have.
                         </li>
-                        <li>Code is here: <a href="https://github.com/idrum4316/adventureland-stats">link</a></li>
+                        <li>Code is <a href="https://github.com/idrum4316/adventureland-stats">here</a>.</li>
                     </ul>
                 </p>
 
@@ -116,8 +116,8 @@ track_stats();
             $("#key_in_code").html(localStorage.getItem("key"));
 		});
 
-        function randomizeKey() {
-            localStorage.setItem("key", generateId(32));
+        function generate_new_key() {
+            randomizeKey();
             $("#key_text").val(localStorage.getItem("key"));
             $("#key_in_code").html(localStorage.getItem("key"));
         }

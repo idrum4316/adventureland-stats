@@ -64,6 +64,10 @@
                 return Array.from(arr).map(dec2hex).join('');
             }
 
+            function randomizeKey() {
+			    localStorage.setItem("key", generateId(32));
+			}
+
             // Builds the URL to a websocket at the current host
 			function get_ws_url(s) {
 			    var l = window.location;

@@ -11,6 +11,10 @@ a.no-style {
 	max-width: 1200px;
 }
 
+#welcome_card {
+	margin: auto;
+}
+
 .mdl-card-full-width {
 	width: 100%;
 }

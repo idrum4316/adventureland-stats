@@ -1,6 +1,9 @@
 var template = $('#handlebars-card').html();
 var templateScript = Handlebars.compile(template);
 
+var template = $('#handlebars-welcome').html();
+var welcomeScript = Handlebars.compile(template);
+
 // This will keep track of all active cards
 var active_cards = [];
 
@@ -16,6 +19,7 @@ function track() {
 
 			rows = event.data.split("\n");
 			names_this_message = [];
+			cards_changed = false;
 
 			for (var i = 0; i < rows.length - 1; i++) {
 				stats = rows[i].split("|");
@@ -30,6 +34,7 @@ function track() {
 					card_html = templateScript(card_context);
 					$("#card_list").append(card_html);
 					active_cards.push(name);
+					cards_changed = true;
 
 					if(!(typeof(componentHandler) == 'undefined')){
 						componentHandler.upgradeAllRegistered();
@@ -54,6 +59,7 @@ function track() {
 			for (var i = 0; i < active_cards.length; i++) {
 				if (names_this_message.indexOf(active_cards[i]) === -1) {
 					$("#card_" + active_cards[i]).remove();
+					cards_changed = true;
 				}
 			}
 			
@@ -62,6 +68,14 @@ function track() {
 				if (names_this_message.indexOf(active_cards[i]) === -1) {
 					$("#card_" + active_cards[i]).remove();
 					active_cards.splice(i, 1);
+				}
+			}
+
+			if (cards_changed) {
+				if (active_cards.length === 0) {
+					add_welcome_message();
+				} else {
+					$("#welcome_card").remove()
 				}
 			}
 
