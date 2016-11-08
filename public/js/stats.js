@@ -7,9 +7,16 @@ var welcomeScript = Handlebars.compile(template);
 // This will keep track of all active cards
 var active_cards = [];
 
+var sock
+
+function sendMessage(msg) {
+	sock.send(msg);
+}
+
 // Add a new ID to track
 function track() {
 	key = localStorage.getItem("key");
+	
 	sock = new WebSocket(get_ws_url("report"));
 
 	sock.onopen = function (event) {

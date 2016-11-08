@@ -3,6 +3,7 @@ package main
 import (
     "log"
     "time"
+    "strings"
     "net/http"
     "html/template"
 
@@ -38,31 +39,63 @@ func handleUpdate(w http.ResponseWriter, r *http.Request) {
 
     // Make sure the API key exists
     db_lock.Lock()
-    if _, ok := db[key]; !ok {
-        db[key] = map[string]string{}
+    if _, ok := users[key]; !ok {
+        users[key] = User{ chars: map[string]*Character{} }
     }
     db_lock.Unlock()
 
-    // Start listening for socket messages
-    for {
+    users[key].chars[name] = &Character{}
 
-        _, p, err = conn.ReadMessage()
+    go processUpdates(conn, key, name)
+
+    
+    users[key].chars[name].Init()
+
+    for {
+        msg := <- users[key].chars[name].command_queue
+
+        err = conn.WriteMessage(websocket.TextMessage, []byte(msg))
+        if err != nil {
+            return
+        }
+    }
+
+    return
+
+}
+
+func processUpdates(c *websocket.Conn, key string, name string) {
+    for {
+        _, p, err := c.ReadMessage()
         if err != nil {
             // Delete the cache if the client diconnects
             db_lock.Lock()
-            delete(db[key], name)
+            delete(users[key].chars, name)
             db_lock.Unlock()
             return
         }
 
         // Update the DB
         db_lock.Lock()
-        db[key][name] = string(p)
+        users[key].chars[name].stats = string(p)
         db_lock.Unlock()
-
     }
+}
 
-    return
+func processWebMessages(c *websocket.Conn, key string) {
+
+    for {
+        _, p, err := c.ReadMessage()
+        if err != nil {
+            return
+        }
+
+        msg := strings.Split(string(p),"|")
+
+
+        // Update the DB
+        users[key].chars[msg[0]].SendMessage(msg[1])
+    }
 
 }
 
@@ -85,18 +118,20 @@ func handleReport(w http.ResponseWriter, r *http.Request) {
     }
     key = string(p)
 
+    go processWebMessages(conn, key)
+
     // Start listening for socket messages
     for {
 
         // Get the data from the db
         db_lock.Lock()
-        key_data := db[key]
+        key_data := users[key]
         db_lock.Unlock()
 
         var encoded_data string
 
-        for k, v := range key_data { 
-            encoded_data = encoded_data + k + "|" + v + "\n"
+        for k, v := range key_data.chars { 
+            encoded_data = encoded_data + k + "|" + v.stats + "\n"
         }
 
         err = conn.WriteMessage(websocket.TextMessage, []byte(encoded_data))
@@ -111,6 +146,13 @@ func handleReport(w http.ResponseWriter, r *http.Request) {
     return
     
 }
+
+// START DEBUG //////////////////////////////////
+func handleSay(w http.ResponseWriter, r *http.Request) {
+    users["password"].chars["Dora2"].SendMessage("Hello")
+    w.Write([]byte("Said Hello"))
+}
+// END DEBUG ////////////////////////////////////
 
 // Serves the main screen
 func handleDisplay(w http.ResponseWriter, r *http.Request) {

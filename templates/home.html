@@ -15,6 +15,11 @@
 					<b>Mana</b> <span id="mana_nums_{{ name }}"></span><div id="mana_bar_{{ name }}" class="mdl-progress mdl-js-progress mdl-progress-mana"></div><br>
 					<b>Experience</b> <span id="xp_nums_{{ name }}"></span><div id="xp_bar_{{ name }}" class="mdl-progress mdl-js-progress mdl-progress-xp"></div>
 				</div>
+				<div class="mdl-card__actions mdl-card--border">
+					<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="sendMessage('{{ name }}|buymp');">
+						Use MP
+					</a>
+				</div>
 				<div class="mdl-card__menu">
 					Level: <span id="lvl_{{ name }}" style="font-weight: 600;"></span>
 				</div>

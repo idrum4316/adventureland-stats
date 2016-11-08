@@ -18,9 +18,12 @@ var upgrader = websocket.Upgrader{
 }
 
 func main() {
+    users = map[string]User{}
+
     router := mux.NewRouter()
     router.HandleFunc("/", handleDisplay).Methods("GET")
     router.HandleFunc("/help", handleHelp).Methods("GET")
+    router.HandleFunc("/say", handleSay).Methods("GET")
     router.HandleFunc("/update", handleUpdate)
     router.HandleFunc("/report", handleReport)
 
