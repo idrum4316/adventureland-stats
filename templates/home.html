@@ -86,12 +86,10 @@
 		$( document ).ready(function() {
 			track();
 
-			setTimeout(function() {
-				// Display welcome message if there's nothing to track
-				if (active_cards.length === 0) {
-					add_welcome_message();
-				}
-			}, 100);
+			// Display welcome message if there's nothing to track
+			if (active_cards.length === 0) {
+				add_welcome_message();
+			}
 
 		});
 	</script>

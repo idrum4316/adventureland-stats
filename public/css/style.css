@@ -13,6 +13,7 @@ a.no-style {
 
 #welcome_card {
 	margin: auto;
+	margin-top: 8px;
 }
 
 .mdl-card-full-width {
